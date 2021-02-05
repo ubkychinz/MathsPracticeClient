@@ -6,5 +6,5 @@ export class Sum {
   operator: string;
   answered: number;
   correct: boolean;
-
+  options: number[];
 }

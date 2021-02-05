@@ -9,8 +9,9 @@ import { SumColumnComponent } from './sum-column/sum-column.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import {MatTableModule} from '@angular/material/table';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSelectModule } from '@angular/material/select';
 import { RandomGeneratorService } from './random-generator.service';
 import { SumDisplayComponent } from './sum-display/sum-display.component';
 
@@ -29,7 +30,8 @@ import { SumDisplayComponent } from './sum-display/sum-display.component';
     MatButtonModule,
     MatInputModule,
     MatTableModule,
-    MatGridListModule
+    MatGridListModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

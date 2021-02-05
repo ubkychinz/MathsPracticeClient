@@ -1,5 +1,6 @@
 import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/cdk/overlay/overlay-directives';
 import { Component, Input, OnInit } from '@angular/core';
+import { _getOptionScrollPosition } from '@angular/material/core';
 import { Sum } from '../models/sum';
 import { RandomGeneratorService } from '../random-generator.service';
 
@@ -14,6 +15,7 @@ export class SumColumnComponent implements OnInit {
   @Input() operator: string;
   @Input() numOfSums: number;
   displayedColumns: string[] = ['sum', 'input'];
+  numOptions: number = 5;
 
 
   constructor(private randomGenerator: RandomGeneratorService) {
@@ -31,7 +33,9 @@ export class SumColumnComponent implements OnInit {
         var genNum2 : number;
         this.randomGenerator.getNumber(1, 9).subscribe(num => genNum2 = num);
 
-        const newSum = {index: i, num1: genNum1, num2: genNum2, operator: this.operator, ans: genNum1 + genNum2, answered: null, correct: false};
+        var ans = genNum1 + genNum2;
+
+        const newSum = {index: i, num1: genNum1, num2: genNum2, operator: this.operator, ans: ans, answered: null, correct: false, options: this.createOptions(this.numOptions, ans)};
 
         this.sums.push( newSum );
       }
@@ -46,15 +50,35 @@ export class SumColumnComponent implements OnInit {
           this.randomGenerator.getNumber(1, 9).subscribe(num => genNum2 = num);
         }
 
+        var ans = genNum1 - genNum2;
 
 
-        const newSum = {index: i, num1: genNum1, num2: genNum2, operator: this.operator, ans: genNum1 - genNum2, answered: null, correct: false};
+        const newSum = {index: i, num1: genNum1, num2: genNum2, operator: this.operator, ans: ans, answered: null, correct: false, options: this.createOptions(this.numOptions, ans)};
 
         this.sums.push( newSum );
       }
     }
 
 
+  }
+
+  createOptions(numOptions, answer): number[] {
+    var options: number[] = [];
+
+    for (var i = 0; i < numOptions - 1; i++) {
+      do {
+        var offset: number;
+        this.randomGenerator.getNumber(-5, 5).subscribe(num => offset = num);
+      } while (offset != 0 && options.indexOf(offset) > -1);
+
+      options.push(offset);
+    }
+
+    var index: number;
+    this.randomGenerator.getNumber(-5, 5).subscribe(num => index = num);
+    options.splice(index, 0, answer);
+
+    return options;
   }
 
   checkAnswers(event): void {

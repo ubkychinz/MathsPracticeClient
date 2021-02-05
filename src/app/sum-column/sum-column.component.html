@@ -17,11 +17,20 @@
   <!-- Name Column -->
   <ng-container matColumnDef="input">
     <th mat-header-cell *matHeaderCellDef>  </th>
-    <td mat-cell [className]="sum.correct ? 'correctClass' : 'incorrectClass'" *matCellDef="let sum"> <input matInput width="20px" [value]="sum.answered" (input)="sum.answered = $event.target.value"> </td>
+    <!-- <td mat-cell [className]="sum.correct ? 'correctClass' : 'incorrectClass'" *matCellDef="let sum"> <input matInput width="20px" [value]="sum.answered" (input)="sum.answered = $event.target.value"> </td> -->
+    <td mat-cell [className]="sum.correct ? 'correctClass' : 'incorrectClass'" *matCellDef="let sum">
+      <mat-form-field class="input">
+        <mat-select class="input" (selectionChange)="sum.answered = $event.value">
+          <mat-option *ngFor='let option of sum.options' [value]='option'>
+            {{option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
 </table>
-<button (click)="checkAnswers($event)">Check</button> 
+<button (click)="checkAnswers($event)">Check</button>
