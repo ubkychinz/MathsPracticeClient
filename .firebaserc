@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "mathspractice"
+  },
+  "targets": {
+    "mathspractice": {
+      "hosting": {
+        "MathsPracticeClient": [
+          "mathspractice"
+        ]
+      }
+    }
+  }
+}

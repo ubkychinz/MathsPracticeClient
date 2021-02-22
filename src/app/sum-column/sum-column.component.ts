@@ -3,6 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { _getOptionScrollPosition } from '@angular/material/core';
 import { Sum } from '../models/sum';
 import { RandomGeneratorService } from '../random-generator.service';
+import { Observable } from 'rxjs';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-sum-column',
@@ -16,6 +18,7 @@ export class SumColumnComponent implements OnInit {
   @Input() numOfSums: number;
   displayedColumns: string[] = ['sum', 'input'];
   numOptions: number = 5;
+  correctCount: number = 0;
 
 
   constructor(private randomGenerator: RandomGeneratorService) {
@@ -35,7 +38,7 @@ export class SumColumnComponent implements OnInit {
 
         var ans = genNum1 + genNum2;
 
-        const newSum = {index: i, num1: genNum1, num2: genNum2, operator: this.operator, ans: ans, answered: null, correct: false, options: this.createOptions(this.numOptions, ans)};
+        var newSum : Sum = { index: i, num1: genNum1, num2: genNum2, operator: this.operator, ans: ans, answered: null, correct: false, options: this.createOptions(this.numOptions, ans), attempted: false };
 
         this.sums.push( newSum );
       }
@@ -53,7 +56,7 @@ export class SumColumnComponent implements OnInit {
         var ans = genNum1 - genNum2;
 
 
-        const newSum = {index: i, num1: genNum1, num2: genNum2, operator: this.operator, ans: ans, answered: null, correct: false, options: this.createOptions(this.numOptions, ans)};
+        const newSum = { index: i, num1: genNum1, num2: genNum2, operator: this.operator, ans: ans, answered: null, correct: null, options: this.createOptions(this.numOptions, ans), attempted: false };
 
         this.sums.push( newSum );
       }
@@ -75,27 +78,33 @@ export class SumColumnComponent implements OnInit {
     }
 
     var index: number;
-    this.randomGenerator.getNumber(-5, 5).subscribe(num => index = num);
+    this.randomGenerator.getNumber(0, 5).subscribe(num => index = num);
     options.splice(index, 0, answer);
 
     return options;
   }
 
-  checkAnswers(event): void {
+  checkAnswers(): number {
     console.log(this.sums);
 
     var correctCount = 0;
 
     this.sums.forEach(function (sum) {
-      if (sum.ans == sum.answered) {
-        correctCount++;
-        sum.correct = true;
-      } else {
-        sum.correct = false;
+      if (sum.answered != null) {
+        sum.attempted = true;
+        if (sum.ans == sum.answered) {
+          correctCount++;
+          sum.correct = true;
+        } else {
+          sum.correct = false;
+        }
       }
     });
 
-    console.log(correctCount);
+    console.log(this.sums);
+
+    this.correctCount = correctCount;
+    return this.correctCount;
   }
 
 }

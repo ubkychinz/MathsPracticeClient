@@ -1,36 +1,30 @@
-<!-- <mat-form-field appearance= "standard" *ngFor= "let sum of sums">
-  <mat-label>{{sum.num1}} {{sum.operator}} {{sum.num2}} = </mat-label>
-  <input matInput>
-</mat-form-field> -->
 
 <table mat-table [dataSource]="sums" class="mat-elevation-z8">
 
-  <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
-
   <!-- Sum Column -->
   <ng-container matColumnDef="sum">
-    <th mat-header-cell *matHeaderCellDef> </th>
-    <td mat-cell [className]="sum.correct ? 'correctClass' : 'incorrectClass'" *matCellDef="let sum"> {{sum.num1}} {{sum.operator}} {{sum.num2}} = </td>
+    <th mat-header-cell *matHeaderCellDef> {{correctCount}} </th>
+    <td mat-cell [className]="sum.attempted ?  (sum.correct ? 'correctClass' : 'incorrectClass') : 'notAnswered' " *matCellDef="let sum"> {{sum.num1}} {{sum.operator}} {{sum.num2}} = </td>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container matColumnDef="input">
     <th mat-header-cell *matHeaderCellDef>  </th>
     <!-- <td mat-cell [className]="sum.correct ? 'correctClass' : 'incorrectClass'" *matCellDef="let sum"> <input matInput width="20px" [value]="sum.answered" (input)="sum.answered = $event.target.value"> </td> -->
-    <td mat-cell [className]="sum.correct ? 'correctClass' : 'incorrectClass'" *matCellDef="let sum">
-      <mat-form-field class="input">
-        <mat-select class="input" (selectionChange)="sum.answered = $event.value">
-          <mat-option *ngFor='let option of sum.options' [value]='option'>
-            {{option}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-  </td>
+    <tr >
+      <td mat-cell  *matCellDef="let sum" [className]="sum.attempted ?  (sum.correct ? 'correctClass' : 'incorrectClass') : 'notAnswered' ">
+        <mat-form-field class="input">
+          <mat-select class="input" (selectionChange)="sum.answered = $event.value">
+            <mat-option *ngFor='let option of sum.options' [value]='option'>
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </td>
+</tr>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
 </table>
-<button (click)="checkAnswers($event)">Check</button>

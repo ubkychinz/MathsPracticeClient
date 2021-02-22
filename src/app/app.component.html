@@ -1,1 +1,12 @@
-<app-sums-page></app-sums-page>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Maths Practice - {{this.daysOfTheWeek[this.date.getDay()]}} {{this.months[this.date.getMonth()]}} {{this.date.getDate()}} {{date.getFullYear()}}</span>
+    <span></span>
+    <span class="spacer"></span>
+    <p *ngIf = "user">Hi {{user.username}}! </p>
+    <input value="RedApplePig" #usernameInput/>
+    <button (click)="getUserDetails()">Get Me</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<app-sums-page [user]="user"></app-sums-page>

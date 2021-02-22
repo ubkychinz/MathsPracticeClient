@@ -1,8 +1,19 @@
-<mat-grid-list cols={{numCols}} rowHeight="60em" (window:resize)="onWindowResize($event)">
-  <mat-grid-tile><app-sum-column [numOfSums]="10" [operator]="'+'"></app-sum-column></mat-grid-tile>
-  <mat-grid-tile><app-sum-column [numOfSums]="10" [operator]="'-'"></app-sum-column></mat-grid-tile>
-  <mat-grid-tile><app-sum-column [numOfSums]="10" [operator]="'+'"></app-sum-column></mat-grid-tile>
-  <mat-grid-tile><app-sum-column [numOfSums]="10" [operator]="'-'"></app-sum-column></mat-grid-tile>
-  <mat-grid-tile><app-sum-column [numOfSums]="10" [operator]="'+'"></app-sum-column></mat-grid-tile>
-  <mat-grid-tile><app-sum-column [numOfSums]="10" [operator]="'-'"></app-sum-column></mat-grid-tile>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span>Arithmetic </span>
+    {{timeDiffHours}}h : {{timeDiffMinutes}}m : {{timeDiffSeconds}}s <p *ngIf = "user">Last Time: {{ this.getHours(user.additionSubtractionResults[0].timeTakenSec * 1000) }}h {{ this.getMinutes(user.additionSubtractionResults[0].timeTakenSec * 1000) }}m {{ this.getSeconds(user.additionSubtractionResults[0].timeTakenSec * 1000) }}s
+                                                        Best Time: {{ this.getHours(this.getBestTime() * 1000) }}h {{ this.getMinutes(this.getBestTime() * 1000) }}m {{ this.getSeconds(this.getBestTime() * 1000) }}s</p>
+    <span class="spacer"></span>
+    Total Correct: {{totalCorrect}}
+    <button mat-raised-button color="primary" (click)="checkButtonClick()" [disabled]="checkButtonDisabled" #checkButton>
+      {{checkButtonText}}:{{checksRemaining}}
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-grid-list *ngIf="checkButtonText == 'Check'" cols={{numCols}} rowHeight="50em" (window:resize)="onWindowResize($event)" #sumsGrid>
+
+  <mat-grid-tile *ngFor = "let op of operatorArray">
+    <app-sum-column [numOfSums]="10" [operator]="op"></app-sum-column>
+  </mat-grid-tile>
 </mat-grid-list>

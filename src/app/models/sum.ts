@@ -7,4 +7,5 @@ export class Sum {
   answered: number;
   correct: boolean;
   options: number[];
+  attempted: boolean;
 }
