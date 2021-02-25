@@ -72,9 +72,9 @@ export class SumColumnComponent implements OnInit {
       do {
         var offset: number;
         this.randomGenerator.getNumber(-5, 5).subscribe(num => offset = num);
-      } while (offset != 0 && options.indexOf(offset) > -1);
+      } while ((answer + offset) < 0 || options.indexOf(answer + offset) > -1 || offset == 0);
 
-      options.push(offset);
+      options.push(answer + offset);
     }
 
     var index: number;
